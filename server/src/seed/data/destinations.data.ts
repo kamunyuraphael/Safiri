@@ -1,0 +1,449 @@
+/**
+ * Curated seed data for Safiri's initial destination catalog.
+ * Cost figures are approximate KES averages for planning purposes,
+ * not live pricing. Coordinates are approximate landmark centers.
+ */
+
+import { DestinationCategory, TravelerType } from "../../models/Destination.model";
+
+export interface SeedDestinationInput {
+  name: string;
+  region: string;
+  county: string;
+  category: DestinationCategory;
+  description: string;
+  shortDescription: string;
+  coordinates: [number, number]; // [lng, lat]
+  imageQuery: string;             // used to fetch images from Unsplash/Pexels
+  estimatedCosts: {
+    budget: { accommodation: number; food: number; transport: number; activities: number };
+    midRange: { accommodation: number; food: number; transport: number; activities: number };
+    luxury: { accommodation: number; food: number; transport: number; activities: number };
+  };
+  entryFee?: { citizen?: number; resident?: number; nonResident?: number };
+  bestSeasons: {
+    name: string;
+    months: string[];
+    weatherSummary: string;
+    isRecommended: boolean;
+  }[];
+  climate: { avgTempLowC: number; avgTempHighC: number; weatherPattern: string };
+  suitableFor: TravelerType[];
+  tags: string[];
+}
+
+export const seedDestinations: SeedDestinationInput[] = [
+  {
+    name: "Maasai Mara National Reserve",
+    region: "Rift Valley",
+    county: "Narok",
+    category: "national-park",
+    description:
+      "Kenya's most famous wildlife reserve, renowned for the Great Migration and dense populations of lion, elephant, and cheetah across open savannah.",
+    shortDescription: "Iconic savannah reserve famous for the Great Migration and Big Five game viewing.",
+    coordinates: [35.1442, -1.4061],
+    imageQuery: "Maasai Mara safari",
+    estimatedCosts: {
+      budget: { accommodation: 3500, food: 1500, transport: 2000, activities: 2500 },
+      midRange: { accommodation: 12000, food: 3500, transport: 4000, activities: 6000 },
+      luxury: { accommodation: 45000, food: 8000, transport: 10000, activities: 15000 },
+    },
+    entryFee: { citizen: 1000, resident: 1500, nonResident: 8000 },
+    bestSeasons: [
+      { name: "Migration Season", months: ["Jul", "Aug", "Sep", "Oct"], weatherSummary: "Dry, cool mornings, peak wildebeest migration", isRecommended: true },
+      { name: "Long Rains", months: ["Apr", "May"], weatherSummary: "Heavy rainfall, muddy roads, fewer crowds", isRecommended: false },
+    ],
+    climate: { avgTempLowC: 12, avgTempHighC: 26, weatherPattern: "Warm days, cool nights, bimodal rainfall" },
+    suitableFor: ["family", "group", "honeymoon", "solo"],
+    tags: ["wildlife", "safari", "big-five", "migration"],
+  },
+  {
+    name: "Diani Beach",
+    region: "Coast",
+    county: "Kwale",
+    category: "beach",
+    description:
+      "A powder-white beach on the Indian Ocean known for coral reefs, water sports, and a lively resort strip south of Mombasa.",
+    shortDescription: "White-sand Indian Ocean beach popular for water sports and relaxation.",
+    coordinates: [39.5786, -4.3167],
+    imageQuery: "Diani Beach Kenya",
+    estimatedCosts: {
+      budget: { accommodation: 2500, food: 1200, transport: 800, activities: 1500 },
+      midRange: { accommodation: 8000, food: 2500, transport: 1500, activities: 4000 },
+      luxury: { accommodation: 30000, food: 6000, transport: 4000, activities: 10000 },
+    },
+    bestSeasons: [
+      { name: "Dry & Sunny", months: ["Dec", "Jan", "Feb", "Mar"], weatherSummary: "Hot, minimal rain, calm seas", isRecommended: true },
+      { name: "Monsoon", months: ["Jun", "Jul", "Aug"], weatherSummary: "Cooler, stronger winds, good for kitesurfing", isRecommended: false },
+    ],
+    climate: { avgTempLowC: 22, avgTempHighC: 31, weatherPattern: "Tropical coastal, humid year-round" },
+    suitableFor: ["couple", "honeymoon", "family", "group"],
+    tags: ["beach", "snorkeling", "kitesurfing", "relaxation"],
+  },
+  {
+    name: "Mount Kenya National Park",
+    region: "Central",
+    county: "Nyeri",
+    category: "mountain",
+    description:
+      "Africa's second-highest peak, offering multi-day trekking routes through moorland, glaciers, and alpine lakes.",
+    shortDescription: "Africa's second-highest mountain, popular for multi-day treks and alpine scenery.",
+    coordinates: [37.3084, -0.1521],
+    imageQuery: "Mount Kenya trekking",
+    estimatedCosts: {
+      budget: { accommodation: 1500, food: 1000, transport: 1500, activities: 3000 },
+      midRange: { accommodation: 5000, food: 2000, transport: 2500, activities: 6000 },
+      luxury: { accommodation: 15000, food: 4000, transport: 5000, activities: 12000 },
+    },
+    entryFee: { citizen: 500, resident: 1000, nonResident: 4000 },
+    bestSeasons: [
+      { name: "Dry Trekking Season", months: ["Jan", "Feb", "Aug", "Sep"], weatherSummary: "Clear skies, best summit visibility", isRecommended: true },
+      { name: "Rainy Season", months: ["Apr", "May", "Nov"], weatherSummary: "Wet trails, higher risk of fog", isRecommended: false },
+    ],
+    climate: { avgTempLowC: -2, avgTempHighC: 18, weatherPattern: "Alpine, cold at altitude, can drop below freezing at peak" },
+    suitableFor: ["solo", "group"],
+    tags: ["trekking", "mountain", "hiking", "adventure"],
+  },
+  {
+    name: "Lake Nakuru National Park",
+    region: "Rift Valley",
+    county: "Nakuru",
+    category: "lake",
+    description:
+      "A soda lake famous for flocks of flamingos and healthy populations of rhino, giraffe, and lion within a compact, easy-to-tour park.",
+    shortDescription: "Soda lake park known for flamingos, rhino sanctuary, and compact game drives.",
+    coordinates: [36.0906, -0.3667],
+    imageQuery: "Lake Nakuru flamingos",
+    estimatedCosts: {
+      budget: { accommodation: 2000, food: 1200, transport: 1500, activities: 2000 },
+      midRange: { accommodation: 7000, food: 2500, transport: 3000, activities: 4500 },
+      luxury: { accommodation: 25000, food: 5000, transport: 7000, activities: 9000 },
+    },
+    entryFee: { citizen: 500, resident: 1000, nonResident: 6000 },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Jun", "Jul", "Aug", "Sep"], weatherSummary: "Best game visibility, lower water levels concentrate wildlife", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 11, avgTempHighC: 25, weatherPattern: "Mild highland climate, moderate rainfall" },
+    suitableFor: ["family", "solo", "group"],
+    tags: ["wildlife", "birdwatching", "rhino", "flamingos"],
+  },
+  {
+    name: "Thika Falls",
+    region: "Central",
+    county: "Kiambu",
+    category: "waterfall",
+    description:
+      "A scenic set of waterfalls near Thika town, popular for short day trips, picnics, and photography close to Nairobi.",
+    shortDescription: "Scenic waterfalls near Thika, popular for day trips and photography.",
+    coordinates: [37.1017, -1.0206],
+    imageQuery: "Thika Falls Kenya",
+    estimatedCosts: {
+      budget: { accommodation: 0, food: 500, transport: 500, activities: 200 },
+      midRange: { accommodation: 3000, food: 1200, transport: 1000, activities: 500 },
+      luxury: { accommodation: 10000, food: 2500, transport: 2000, activities: 1000 },
+    },
+    entryFee: { citizen: 100, resident: 150, nonResident: 500 },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Jan", "Feb", "Jun", "Jul", "Aug"], weatherSummary: "Clear paths, comfortable walking conditions", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 14, avgTempHighC: 26, weatherPattern: "Mild highland climate, moderate year-round rainfall" },
+    suitableFor: ["family", "solo", "couple", "group"],
+    tags: ["waterfall", "day-trip", "photography", "nature"],
+  },
+  {
+    name: "Amboseli National Park",
+    region: "Rift Valley",
+    county: "Kajiado",
+    category: "national-park",
+    description:
+      "Famous for large elephant herds set against the backdrop of Mount Kilimanjaro, with swamps and dried lake beds supporting rich wildlife.",
+    shortDescription: "Elephant herds framed by iconic Kilimanjaro views.",
+    coordinates: [37.2606, -2.6527],
+    imageQuery: "Amboseli elephants Kilimanjaro",
+    estimatedCosts: {
+      budget: { accommodation: 3000, food: 1400, transport: 2000, activities: 2500 },
+      midRange: { accommodation: 11000, food: 3200, transport: 4000, activities: 5500 },
+      luxury: { accommodation: 40000, food: 7500, transport: 9000, activities: 14000 },
+    },
+    entryFee: { citizen: 1000, resident: 1500, nonResident: 8000 },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Jun", "Jul", "Aug", "Sep", "Jan", "Feb"], weatherSummary: "Clear Kilimanjaro views, wildlife gathers near swamps", isRecommended: true },
+      { name: "Long Rains", months: ["Mar", "Apr", "May"], weatherSummary: "Frequent rain, mountain often cloud-covered", isRecommended: false },
+    ],
+    climate: { avgTempLowC: 13, avgTempHighC: 28, weatherPattern: "Semi-arid, hot days, cool nights" },
+    suitableFor: ["family", "group", "honeymoon", "solo"],
+    tags: ["wildlife", "elephants", "safari", "photography"],
+  },
+  {
+    name: "Tsavo East National Park",
+    region: "Coast",
+    county: "Taita-Taveta",
+    category: "national-park",
+    description:
+      "One of Kenya's largest parks, known for its red-dust elephants, the Yatta Plateau lava flow, and the Galana River.",
+    shortDescription: "Vast wilderness park famous for red-earth elephants and open plains.",
+    coordinates: [38.9756, -2.9856],
+    imageQuery: "Tsavo East elephants savannah",
+    estimatedCosts: {
+      budget: { accommodation: 2500, food: 1200, transport: 2000, activities: 2000 },
+      midRange: { accommodation: 9000, food: 2800, transport: 3800, activities: 4500 },
+      luxury: { accommodation: 32000, food: 6500, transport: 8000, activities: 11000 },
+    },
+    entryFee: { citizen: 500, resident: 1000, nonResident: 6000 },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Jun", "Jul", "Aug", "Sep", "Jan", "Feb", "Mar"], weatherSummary: "Easier wildlife spotting around water sources", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 18, avgTempHighC: 32, weatherPattern: "Hot and dry, semi-arid savannah" },
+    suitableFor: ["family", "group", "solo"],
+    tags: ["wildlife", "safari", "elephants", "wilderness"],
+  },
+  {
+    name: "Samburu National Reserve",
+    region: "Rift Valley",
+    county: "Samburu",
+    category: "national-park",
+    description:
+      "A rugged, semi-arid reserve along the Ewaso Ng'iro River, home to species found nowhere else in Kenya's southern parks — the 'Samburu Special Five'.",
+    shortDescription: "Arid-land reserve famous for unique wildlife species and Samburu culture.",
+    coordinates: [37.5347, 0.5975],
+    imageQuery: "Samburu National Reserve wildlife",
+    estimatedCosts: {
+      budget: { accommodation: 3000, food: 1400, transport: 2500, activities: 2500 },
+      midRange: { accommodation: 10000, food: 3000, transport: 4500, activities: 5000 },
+      luxury: { accommodation: 38000, food: 7000, transport: 9500, activities: 13000 },
+    },
+    entryFee: { citizen: 1000, resident: 1500, nonResident: 7000 },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Jun", "Jul", "Aug", "Sep", "Jan", "Feb"], weatherSummary: "Wildlife concentrates near the river, best visibility", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 20, avgTempHighC: 33, weatherPattern: "Hot, arid, minimal rainfall" },
+    suitableFor: ["solo", "couple", "group", "family"],
+    tags: ["wildlife", "culture", "safari", "river"],
+  },
+  {
+    name: "Ol Pejeta Conservancy",
+    region: "Central",
+    county: "Laikipia",
+    category: "conservancy",
+    description:
+      "Home to the last two northern white rhinos on Earth and East Africa's largest black rhino sanctuary, alongside a chimpanzee sanctuary.",
+    shortDescription: "Rhino sanctuary and conservancy known for conservation-focused safaris.",
+    coordinates: [36.9075, 0.0236],
+    imageQuery: "Ol Pejeta rhino conservancy",
+    estimatedCosts: {
+      budget: { accommodation: 3500, food: 1500, transport: 2000, activities: 3000 },
+      midRange: { accommodation: 13000, food: 3500, transport: 4000, activities: 6500 },
+      luxury: { accommodation: 42000, food: 8000, transport: 9000, activities: 15000 },
+    },
+    entryFee: { citizen: 1000, resident: 2000, nonResident: 9000 },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Jun", "Jul", "Aug", "Sep", "Dec", "Jan", "Feb"], weatherSummary: "Good visibility, comfortable game drive conditions", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 12, avgTempHighC: 25, weatherPattern: "Highland savannah, mild and temperate" },
+    suitableFor: ["family", "group", "solo", "honeymoon"],
+    tags: ["conservation", "rhino", "wildlife", "chimpanzee"],
+  },
+  {
+    name: "Lake Naivasha",
+    region: "Rift Valley",
+    county: "Nakuru",
+    category: "lake",
+    description:
+      "A freshwater lake known for boat rides among hippos, birdwatching, and easy access to Hell's Gate and Crescent Island.",
+    shortDescription: "Freshwater lake popular for boat safaris and hippo/bird sightings.",
+    coordinates: [36.3667, -0.7167],
+    imageQuery: "Lake Naivasha boat hippos",
+    estimatedCosts: {
+      budget: { accommodation: 2000, food: 1000, transport: 1200, activities: 1500 },
+      midRange: { accommodation: 7000, food: 2200, transport: 2500, activities: 3500 },
+      luxury: { accommodation: 22000, food: 5000, transport: 5500, activities: 8000 },
+    },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Jun", "Jul", "Aug", "Sep", "Jan", "Feb"], weatherSummary: "Calm waters, clear skies for boat rides", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 12, avgTempHighC: 26, weatherPattern: "Mild Rift Valley climate, moderate rainfall" },
+    suitableFor: ["family", "couple", "group", "solo"],
+    tags: ["lake", "boat-ride", "birdwatching", "hippos"],
+  },
+  {
+    name: "Lake Bogoria National Reserve",
+    region: "Rift Valley",
+    county: "Baringo",
+    category: "lake",
+    description:
+      "A dramatic soda lake known for its geysers, hot springs, and large flocks of flamingos along a steep escarpment backdrop.",
+    shortDescription: "Soda lake famed for hot springs, geysers, and flamingo flocks.",
+    coordinates: [36.1167, 0.2333],
+    imageQuery: "Lake Bogoria hot springs flamingos",
+    estimatedCosts: {
+      budget: { accommodation: 1800, food: 1000, transport: 1500, activities: 1000 },
+      midRange: { accommodation: 6000, food: 2000, transport: 3000, activities: 2500 },
+      luxury: { accommodation: 18000, food: 4500, transport: 6000, activities: 6000 },
+    },
+    entryFee: { citizen: 300, resident: 500, nonResident: 3000 },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Jan", "Feb", "Jun", "Jul", "Aug", "Sep"], weatherSummary: "Easy access roads, active geyser viewing", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 18, avgTempHighC: 32, weatherPattern: "Hot Rift Valley floor climate" },
+    suitableFor: ["solo", "family", "group"],
+    tags: ["hot-springs", "flamingos", "geysers", "nature"],
+  },
+  {
+    name: "Hell's Gate National Park",
+    region: "Rift Valley",
+    county: "Nakuru",
+    category: "national-park",
+    description:
+      "A dramatic gorge park where visitors can cycle and walk freely among wildlife, known for towering cliffs and the Ol Njorowa Gorge.",
+    shortDescription: "Walk-and-cycle park famous for gorges, cliffs, and geothermal steam vents.",
+    coordinates: [36.3167, -0.9],
+    imageQuery: "Hells Gate National Park gorge",
+    estimatedCosts: {
+      budget: { accommodation: 1500, food: 900, transport: 1000, activities: 1500 },
+      midRange: { accommodation: 5000, food: 1800, transport: 2000, activities: 3000 },
+      luxury: { accommodation: 16000, food: 4000, transport: 4500, activities: 6500 },
+    },
+    entryFee: { citizen: 300, resident: 500, nonResident: 3500 },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Jun", "Jul", "Aug", "Sep", "Jan", "Feb"], weatherSummary: "Best conditions for cycling and gorge walks", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 14, avgTempHighC: 28, weatherPattern: "Warm, dry Rift Valley floor climate" },
+    suitableFor: ["solo", "group", "family"],
+    tags: ["cycling", "hiking", "gorge", "adventure"],
+  },
+  {
+    name: "Watamu",
+    region: "Coast",
+    county: "Kilifi",
+    category: "beach",
+    description:
+      "A laid-back coastal town with a marine national park, coral gardens, and one of the largest sea turtle nesting programs on the coast.",
+    shortDescription: "Coastal town with marine park, coral reefs, and sea turtle conservation.",
+    coordinates: [40.0219, -3.3833],
+    imageQuery: "Watamu beach Kenya",
+    estimatedCosts: {
+      budget: { accommodation: 2200, food: 1100, transport: 800, activities: 1200 },
+      midRange: { accommodation: 7500, food: 2200, transport: 1500, activities: 3500 },
+      luxury: { accommodation: 28000, food: 5500, transport: 3500, activities: 9000 },
+    },
+    bestSeasons: [
+      { name: "Dry & Sunny", months: ["Dec", "Jan", "Feb", "Mar"], weatherSummary: "Calm seas, ideal for diving and snorkeling", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 22, avgTempHighC: 31, weatherPattern: "Tropical coastal, humid year-round" },
+    suitableFor: ["couple", "honeymoon", "family", "solo"],
+    tags: ["beach", "diving", "marine-park", "turtles"],
+  },
+  {
+    name: "Lamu Old Town",
+    region: "Coast",
+    county: "Lamu",
+    category: "cultural-site",
+    description:
+      "A UNESCO World Heritage Site and Kenya's oldest living Swahili settlement, with narrow streets, carved wooden doors, and no motor vehicles.",
+    shortDescription: "UNESCO-listed Swahili old town with car-free streets and rich heritage.",
+    coordinates: [40.9020, -2.2717],
+    imageQuery: "Lamu Old Town Swahili architecture",
+    estimatedCosts: {
+      budget: { accommodation: 1800, food: 900, transport: 600, activities: 1000 },
+      midRange: { accommodation: 6500, food: 2000, transport: 1200, activities: 2500 },
+      luxury: { accommodation: 22000, food: 4500, transport: 3000, activities: 6000 },
+    },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Dec", "Jan", "Feb", "Jun", "Jul"], weatherSummary: "Pleasant sea breeze, comfortable walking weather", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 23, avgTempHighC: 32, weatherPattern: "Tropical coastal, humid, breezy" },
+    suitableFor: ["couple", "solo", "honeymoon", "family"],
+    tags: ["culture", "heritage", "architecture", "unesco"],
+  },
+  {
+    name: "Fort Jesus & Mombasa Old Town",
+    region: "Coast",
+    county: "Mombasa",
+    category: "cultural-site",
+    description:
+      "A 16th-century Portuguese fort overlooking Mombasa's harbor, set beside the winding streets and Swahili-Arab architecture of the Old Town.",
+    shortDescription: "Historic Portuguese fort and adjoining Swahili-Arab old town quarter.",
+    coordinates: [39.6636, -4.0635],
+    imageQuery: "Fort Jesus Mombasa",
+    estimatedCosts: {
+      budget: { accommodation: 1500, food: 800, transport: 500, activities: 800 },
+      midRange: { accommodation: 5500, food: 1800, transport: 1200, activities: 2000 },
+      luxury: { accommodation: 20000, food: 4000, transport: 3000, activities: 5000 },
+    },
+    entryFee: { citizen: 200, resident: 300, nonResident: 1500 },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Dec", "Jan", "Feb", "Jun", "Jul", "Aug"], weatherSummary: "Comfortable for walking tours, less humidity", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 23, avgTempHighC: 32, weatherPattern: "Tropical coastal, humid year-round" },
+    suitableFor: ["solo", "family", "couple", "group"],
+    tags: ["history", "culture", "architecture", "unesco"],
+  },
+  {
+    name: "Karura Forest",
+    region: "Central",
+    county: "Nairobi",
+    category: "urban",
+    description:
+      "A protected urban forest within Nairobi offering waterfalls, cycling trails, and a Mau Mau cave, popular as an easy nature escape from the city.",
+    shortDescription: "Nairobi's urban forest with trails, waterfalls, and cycling paths.",
+    coordinates: [36.8219, -1.2447],
+    imageQuery: "Karura Forest Nairobi trails",
+    estimatedCosts: {
+      budget: { accommodation: 0, food: 500, transport: 400, activities: 500 },
+      midRange: { accommodation: 4000, food: 1200, transport: 800, activities: 1200 },
+      luxury: { accommodation: 15000, food: 3000, transport: 2000, activities: 3000 },
+    },
+    entryFee: { citizen: 100, resident: 200, nonResident: 600 },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Jan", "Feb", "Jun", "Jul", "Aug", "Sep"], weatherSummary: "Clear trails, comfortable for walking and cycling", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 13, avgTempHighC: 25, weatherPattern: "Mild highland climate, moderate rainfall" },
+    suitableFor: ["solo", "family", "couple", "group"],
+    tags: ["nature", "hiking", "cycling", "day-trip"],
+  },
+  {
+    name: "Kisumu & Lake Victoria",
+    region: "Nyanza",
+    county: "Kisumu",
+    category: "town",
+    description:
+      "Kenya's third-largest city, set on the shores of Lake Victoria, known for its lakeside markets, birdlife, and access to Ndere Island.",
+    shortDescription: "Lakeside city on Lake Victoria known for markets and birdwatching boat trips.",
+    coordinates: [34.7617, -0.0917],
+    imageQuery: "Kisumu Lake Victoria",
+    estimatedCosts: {
+      budget: { accommodation: 1800, food: 900, transport: 700, activities: 1000 },
+      midRange: { accommodation: 6000, food: 2000, transport: 1500, activities: 2500 },
+      luxury: { accommodation: 20000, food: 4500, transport: 3500, activities: 6000 },
+    },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Jun", "Jul", "Aug", "Sep", "Jan", "Feb"], weatherSummary: "Lower humidity, calmer lake conditions for boat trips", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 18, avgTempHighC: 29, weatherPattern: "Warm, humid lakeside climate" },
+    suitableFor: ["solo", "family", "group", "couple"],
+    tags: ["lake", "city", "birdwatching", "culture"],
+  },
+  {
+    name: "Thomson's Falls",
+    region: "Central",
+    county: "Laikipia",
+    category: "waterfall",
+    description:
+      "A 74-meter waterfall on the Ewaso Narok River near Nyahururu, framed by highland forest and a popular stop en route to northern Kenya.",
+    shortDescription: "Dramatic 74m highland waterfall near Nyahururu town.",
+    coordinates: [36.3667, 0.0333],
+    imageQuery: "Thomsons Falls Nyahururu",
+    estimatedCosts: {
+      budget: { accommodation: 1200, food: 700, transport: 800, activities: 300 },
+      midRange: { accommodation: 4000, food: 1500, transport: 1500, activities: 700 },
+      luxury: { accommodation: 12000, food: 3000, transport: 3000, activities: 1500 },
+    },
+    entryFee: { citizen: 150, resident: 200, nonResident: 500 },
+    bestSeasons: [
+      { name: "Dry Season", months: ["Jan", "Feb", "Jun", "Jul", "Aug", "Sep"], weatherSummary: "Clear viewing paths, comfortable highland temperatures", isRecommended: true },
+    ],
+    climate: { avgTempLowC: 8, avgTempHighC: 22, weatherPattern: "Cool highland climate, can be chilly at night" },
+    suitableFor: ["family", "solo", "couple", "group"],
+    tags: ["waterfall", "day-trip", "highland", "photography"],
+  },
+];

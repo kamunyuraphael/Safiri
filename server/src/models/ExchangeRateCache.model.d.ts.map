@@ -1,0 +1,1 @@
+{"version":3,"file":"ExchangeRateCache.model.d.ts","sourceRoot":"","sources":["ExchangeRateCache.model.ts"],"names":[],"mappings":"AAAA,OAAO,EAAiB,QAAQ,EAAE,MAAM,UAAU,CAAC;AAEnD,MAAM,WAAW,kBAAmB,SAAQ,QAAQ;IAClD,YAAY,EAAE,MAAM,CAAC;IACrB,KAAK,EAAE,MAAM,CAAC,MAAM,EAAE,MAAM,CAAC,CAAC;IAC9B,SAAS,EAAE,IAAI,CAAC;CACjB"}
