@@ -427,7 +427,7 @@ export function Home() {
       <section className="relative py-32 px-6 md:px-16 lg:px-24 overflow-hidden">
         <div className="absolute inset-0">
           <img
-            src="https://res.cloudinary.com/duuwn3dzm/image/upload/c_fill,h_400,w_600,q_auto/lion-close_jgyk1j.jpg"
+            src="https://res.cloudinary.com/iprdnhzp/image/upload/v1789214488/safiri/destinations/mskk0ptg84zoinocgloj.jpg"
             alt="Lions in the savanna at golden hour"
             className="w-full h-full object-cover"
           />
