@@ -1,4 +1,5 @@
-import { anthropic, CHAT_MODEL } from "../config/anthropic";
+import axios from "axios";
+import { GEMINI_API_URL, getGeminiApiKey } from "../config/gemini";
 import Destination from "../models/Destination.model";
 
 export interface ChatMessage {
@@ -19,8 +20,8 @@ Rules:
 /**
  * Very simple retrieval step: pulls the most relevant seeded destinations
  * for the user's latest message using MongoDB's text index, and formats
- * them as grounding context for Claude. Keeps the assistant honest about
- * only recommending real, seeded places.
+ * them as grounding context for the model. Keeps the assistant honest
+ * about only recommending real, seeded places.
  */
 async function getRelevantDestinationsContext(query: string): Promise<string> {
   let matches = await Destination.find(
@@ -62,13 +63,29 @@ export async function getChatReply(messages: ChatMessage[]): Promise<string> {
   const lastUserMessage = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
   const context = await getRelevantDestinationsContext(lastUserMessage);
 
-  const response = await anthropic.messages.create({
-    model: CHAT_MODEL,
-    max_tokens: 700,
-    system: `${SYSTEM_PROMPT}\n\nKnown destinations relevant to this conversation:\n\n${context}`,
-    messages: messages.map((m) => ({ role: m.role, content: m.content })),
-  });
+  const apiKey = getGeminiApiKey();
 
-  const textBlock = response.content.find((block) => block.type === "text");
-  return textBlock && textBlock.type === "text" ? textBlock.text : "";
+  // Gemini uses "model" instead of "assistant" for the AI's turns, and
+  // takes the system prompt as a separate systemInstruction field.
+  const contents = messages.map((m) => ({
+    role: m.role === "assistant" ? "model" : "user",
+    parts: [{ text: m.content }],
+  }));
+
+  const response = await axios.post(
+    `${GEMINI_API_URL}?key=${apiKey}`,
+    {
+      contents,
+      systemInstruction: {
+        parts: [{ text: `${SYSTEM_PROMPT}\n\nKnown destinations relevant to this conversation:\n\n${context}` }],
+      },
+      generationConfig: {
+        maxOutputTokens: 700,
+      },
+    },
+    { headers: { "Content-Type": "application/json" } }
+  );
+
+  const text = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  return text || "I couldn't come up with a response — try rephrasing that?";
 }

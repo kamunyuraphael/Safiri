@@ -7,6 +7,22 @@ export interface CloudinaryUploadResult {
 }
 
 /**
+ * Uploads an image from a local file path on disk — used by the manual
+ * photo-upload script, since Cloudinary's SDK accepts local paths directly.
+ */
+export async function uploadImageFromFile(
+  filePath: string,
+  folder = "safiri/destinations"
+): Promise<CloudinaryUploadResult> {
+  const result: UploadApiResponse = await cloudinary.uploader.upload(filePath, {
+    folder,
+    resource_type: "image",
+  });
+
+  return { url: result.secure_url, publicId: result.public_id };
+}
+
+/**
  * Uploads an image to Cloudinary directly from a remote URL (e.g. an
  * Unsplash result) without downloading it locally first — Cloudinary
  * fetches it server-side. Used by the seed script so destinations end

@@ -9,6 +9,7 @@
     "seed": "tsx src/seed/seedDestinations.ts",
     "backfill:images": "tsx src/seed/backfillCloudinaryImages.ts",
     "backfill:missing-images": "tsx src/seed/backfillMissingImages.ts",
+    "upload:local-images": "tsx src/seed/uploadLocalImages.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -16,7 +17,6 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@anthropic-ai/sdk": "^0.32.1",
     "axios": "^1.7.9",
     "bcrypt": "^5.1.1",
     "cloudinary": "^2.5.1",
