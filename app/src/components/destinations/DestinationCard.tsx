@@ -1,4 +1,6 @@
+import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ImageOff } from "lucide-react";
 import type { Destination, DestinationCategory } from "@/types/destination";
 
 // Maps our real category taxonomy onto the design's 5-badge system.
@@ -23,7 +25,9 @@ const BADGE_COLORS: Record<string, string> = {
 };
 
 export function DestinationCard({ destination }: { destination: Destination }) {
+  const [imageFailed, setImageFailed] = useState(false);
   const image = destination.images[0]?.url;
+  const showImage = image && !imageFailed;
   const badge = CATEGORY_TO_BADGE[destination.category] ?? "Nature";
   const mid = destination.estimatedCosts.midRange;
   const dailyTotal = mid.accommodation + mid.food + mid.transport + mid.activities;
@@ -35,12 +39,17 @@ export function DestinationCard({ destination }: { destination: Destination }) {
       className="group rounded-2xl overflow-hidden bg-white border border-earth-200/60 hover:border-terra-400/30 hover:shadow-xl hover:shadow-terra-400/10 transition-all duration-300 block"
     >
       <div className="relative h-52 bg-earth-200 overflow-hidden">
-        {image && (
+        {showImage ? (
           <img
             src={image}
             alt={destination.name}
+            onError={() => setImageFailed(true)}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
           />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center">
+            <ImageOff className="h-8 w-8 text-earth-400" strokeWidth={1.5} />
+          </div>
         )}
         <span className={`absolute top-3 left-3 text-xs font-medium px-3 py-1 rounded-full ${BADGE_COLORS[badge]}`}>
           {badge}

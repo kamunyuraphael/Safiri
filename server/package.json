@@ -8,6 +8,7 @@
     "start": "node dist/server.js",
     "seed": "tsx src/seed/seedDestinations.ts",
     "backfill:images": "tsx src/seed/backfillCloudinaryImages.ts",
+    "backfill:missing-images": "tsx src/seed/backfillMissingImages.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

@@ -1,15 +1,16 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
+import { PawPrint, Waves, Mountain, Landmark, Leaf, Sunrise, Sparkles } from "lucide-react";
 import { DestinationCard, CATEGORY_TO_BADGE } from "@/components/destinations/DestinationCard";
 import { ChatPlanner } from "@/components/common/ChatPlanner";
 import { getDestinations } from "@/services/destinationService";
 import type { Destination, BudgetTier } from "@/types/destination";
 
 const EXPERIENCES = [
-  { icon: "🦁", label: "Game Drives", desc: "Dawn and dusk drives with expert local rangers across Kenya's premier reserves." },
-  { icon: "🏖️", label: "Coastal Escapes", desc: "Sun-drenched dhow trips, snorkelling reefs, and fresh-catch seafood on the coast." },
-  { icon: "🏔️", label: "Highland Treks", desc: "Guided ascents of Mount Kenya, Aberdares, and highland waterfalls." },
-  { icon: "🎭", label: "Cultural Immersion", desc: "Swahili old towns, village stays, and heritage architecture along the coast." },
+  { icon: PawPrint, label: "Game Drives", desc: "Dawn and dusk drives with expert local rangers across Kenya's premier reserves." },
+  { icon: Waves, label: "Coastal Escapes", desc: "Sun-drenched dhow trips, snorkelling reefs, and fresh-catch seafood on the coast." },
+  { icon: Mountain, label: "Highland Treks", desc: "Guided ascents of Mount Kenya, Aberdares, and highland waterfalls." },
+  { icon: Landmark, label: "Cultural Immersion", desc: "Swahili old towns, village stays, and heritage architecture along the coast." },
 ];
 
 const TESTIMONIALS = [
@@ -75,11 +76,11 @@ export function Home() {
 
   const estimatedTotal = avgDailyCostByTier[budgetTier] * budgetAdults * budgetDays;
 
-  const tierCards: { tier: BudgetTier; label: string; icon: string; perks: string[]; color: string; btnColor: string; featured?: boolean }[] = [
+  const tierCards: { tier: BudgetTier; label: string; icon: typeof Leaf; perks: string[]; color: string; btnColor: string; featured?: boolean }[] = [
     {
       tier: "budget",
       label: "Budget",
-      icon: "🌿",
+      icon: Leaf,
       perks: ["Public transport", "Guesthouses & bandas", "Self-catered meals", "Community-led tours"],
       color: "bg-forest-700 text-earth-100",
       btnColor: "bg-savanna-400 text-forest-800 hover:bg-savanna-500 hover:text-white",
@@ -87,7 +88,7 @@ export function Home() {
     {
       tier: "midRange",
       label: "Mid-Range",
-      icon: "🌄",
+      icon: Sunrise,
       featured: true,
       perks: ["Shared safari vehicle", "3-star lodges & tented camps", "Half-board meals", "Park fees included"],
       color: "bg-terra-400 text-earth-50",
@@ -96,7 +97,7 @@ export function Home() {
     {
       tier: "luxury",
       label: "Luxury",
-      icon: "✨",
+      icon: Sparkles,
       perks: ["Private vehicle & guide", "Luxury lodges & conservancies", "Full-board + drinks", "Bush dinners & balloon rides"],
       color: "bg-forest-800 text-earth-200",
       btnColor: "bg-terra-400 text-white hover:bg-terra-600",
@@ -171,7 +172,7 @@ export function Home() {
                 key={exp.label}
                 className="p-7 bg-forest-700/50 border border-forest-700 rounded-2xl hover:bg-forest-700 hover:border-savanna-400/40 transition-all duration-300 group"
               >
-                <span className="text-4xl mb-5 block">{exp.icon}</span>
+                <exp.icon className="h-8 w-8 text-savanna-400 mb-5" strokeWidth={1.75} />
                 <h3 className="font-display text-xl text-earth-100 mb-2 group-hover:text-savanna-400 transition-colors">
                   {exp.label}
                 </h3>
@@ -334,7 +335,7 @@ export function Home() {
                 key={tc.tier}
                 className={`rounded-2xl p-8 ${tc.color} ${tc.featured ? "ring-2 ring-savanna-400 scale-[1.02]" : ""} transition-transform`}
               >
-                <span className="text-3xl mb-4 block">{tc.icon}</span>
+                <tc.icon className="h-8 w-8 mb-4" strokeWidth={1.75} />
                 <h3 className="font-display text-2xl mb-1">{tc.label}</h3>
                 <p className="text-lg font-semibold opacity-80 mb-6">
                   {destinations.length > 0 ? `~KES ${avgDailyCostByTier[tc.tier].toLocaleString()}/day` : "—"}

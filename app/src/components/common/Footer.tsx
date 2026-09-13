@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { Compass, Globe } from "lucide-react";
 
 const EXPLORE_LINKS = [
   { label: "Destinations", to: "/destinations" },
@@ -18,7 +19,7 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-10 mb-12">
           <div className="md:col-span-2">
             <div className="flex items-center gap-2 mb-4">
-              <span className="text-2xl">🧭</span>
+              <Compass className="h-6 w-6 text-terra-400" strokeWidth={2.2} />
               <span className="font-display text-2xl font-semibold text-earth-100">Safiri</span>
             </div>
             <p className="text-forest-700/70 text-sm leading-relaxed max-w-xs text-[#6b8065]">
@@ -52,8 +53,8 @@ export function Footer() {
           </div>
         </div>
         <div className="pt-8 border-t border-forest-700 flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-[#4a6040] text-xs">
-            © 2026 Safiri. Proudly Kenyan. Made with 🌍 in Thika.
+          <p className="text-[#4a6040] text-xs flex items-center gap-1.5">
+            © 2026 Safiri. Proudly Kenyan. Made with <Globe className="h-3.5 w-3.5 inline" /> in Thika.
           </p>
           <p className="text-[#4a6040] text-xs italic font-display">
             Safari nzuri — Have a good journey.
