@@ -1,5 +1,11 @@
 import axios from "axios";
-import { GEMINI_API_URL, getGeminiApiKey } from "../config/gemini";
+import {
+  OPENROUTER_API_URL,
+  OPENROUTER_MODEL,
+  OPENROUTER_SITE_URL,
+  OPENROUTER_APP_NAME,
+  getOpenRouterApiKey,
+} from "../config/openrouter";
 import Destination from "../models/Destination.model";
 
 export interface ChatMessage {
@@ -63,29 +69,45 @@ export async function getChatReply(messages: ChatMessage[]): Promise<string> {
   const lastUserMessage = [...messages].reverse().find((m) => m.role === "user")?.content ?? "";
   const context = await getRelevantDestinationsContext(lastUserMessage);
 
-  const apiKey = getGeminiApiKey();
+  const apiKey = getOpenRouterApiKey();
 
-  // Gemini uses "model" instead of "assistant" for the AI's turns, and
-  // takes the system prompt as a separate systemInstruction field.
-  const contents = messages.map((m) => ({
-    role: m.role === "assistant" ? "model" : "user",
-    parts: [{ text: m.content }],
-  }));
-
-  const response = await axios.post(
-    `${GEMINI_API_URL}?key=${apiKey}`,
+  // OpenRouter uses the OpenAI chat format: the system prompt is just the
+  // first message, and the AI's turns keep the "assistant" role.
+  const payload = [
     {
-      contents,
-      systemInstruction: {
-        parts: [{ text: `${SYSTEM_PROMPT}\n\nKnown destinations relevant to this conversation:\n\n${context}` }],
-      },
-      generationConfig: {
-        maxOutputTokens: 700,
-      },
+      role: "system",
+      content: `${SYSTEM_PROMPT}\n\nKnown destinations relevant to this conversation:\n\n${context}`,
     },
-    { headers: { "Content-Type": "application/json" } }
-  );
+    ...messages.map((m) => ({ role: m.role, content: m.content })),
+  ];
 
-  const text = response.data?.candidates?.[0]?.content?.parts?.[0]?.text;
-  return text || "I couldn't come up with a response — try rephrasing that?";
+  try {
+    const response = await axios.post(
+      OPENROUTER_API_URL,
+      {
+        model: OPENROUTER_MODEL,
+        messages: payload,
+        max_tokens: 700,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": OPENROUTER_SITE_URL,
+          "X-Title": OPENROUTER_APP_NAME,
+        },
+        timeout: 30000,
+      }
+    );
+
+    const text = response.data?.choices?.[0]?.message?.content;
+    return text || "I couldn't come up with a response — try rephrasing that?";
+  } catch (err) {
+    if (axios.isAxiosError(err)) {
+      const detail = err.response?.data?.error?.message || err.message;
+      console.error("OpenRouter error:", err.response?.status, detail);
+      throw new Error(`AI service error: ${detail}`);
+    }
+    throw err;
+  }
 }
