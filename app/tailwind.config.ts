@@ -30,15 +30,15 @@ export default {
           800: "#1e3320",
           900: "#121f14",
         },
-        // Semantic aliases — existing components (Button, Card, etc.) use these
+        // Semantic aliases, existing components (Button, Card, etc.) use these
         background: "#fdf8f2", // earth-50
         foreground: "#1e3320", // forest-800
         primary: {
-          DEFAULT: "#c0522a", // terra-400 — the design's action color
+          DEFAULT: "#c0522a", // terra-400, the design's action color
           foreground: "#fdf8f2",
         },
         accent: {
-          DEFAULT: "#c9a227", // savanna-400 — gold highlight
+          DEFAULT: "#c9a227", // savanna-400, gold highlight
           foreground: "#1e3320",
         },
         muted: {
@@ -48,7 +48,7 @@ export default {
         border: "#e8d0a9", // earth-200
       },
       fontFamily: {
-        display: ["Fraunces", "Georgia", "serif"],
+        display: ["Bricolage Grotesque", "system-ui", "sans-serif"],
         sans: ["Outfit", "system-ui", "sans-serif"],
       },
       borderRadius: {

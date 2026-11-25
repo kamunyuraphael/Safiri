@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { getDestinationBySlug } from "@/services/destinationService";
 import type { Destination } from "@/types/destination";
@@ -11,10 +12,18 @@ export function DestinationDetailPage() {
 
   useEffect(() => {
     if (!slug) return;
+    // Reset on every slug change and ignore late responses, so navigating
+    // between destinations never shows the previous one's data.
+    let cancelled = false;
+    setLoading(true);
+    setDestination(null);
     getDestinationBySlug(slug)
-      .then(setDestination)
-      .catch(() => setDestination(null))
-      .finally(() => setLoading(false));
+      .then((d) => !cancelled && setDestination(d))
+      .catch(() => !cancelled && setDestination(null))
+      .finally(() => !cancelled && setLoading(false));
+    return () => {
+      cancelled = true;
+    };
   }, [slug]);
 
   if (loading) return <p className="mx-auto max-w-6xl px-6 py-16 text-foreground/50">Loading…</p>;
@@ -50,7 +59,7 @@ export function DestinationDetailPage() {
                   />
                   <div>
                     <p className="font-medium">
-                      {season.name} — {season.months.join(", ")}
+                      {season.name} · {season.months.join(", ")}
                     </p>
                     <p className="text-foreground/60">{season.weatherSummary}</p>
                   </div>
@@ -61,7 +70,10 @@ export function DestinationDetailPage() {
         </div>
 
         <div className="space-y-4">
-          <h2 className="font-display text-2xl">Estimated budget</h2>
+          <Button asChild className="w-full">
+            <Link to={`/itineraries/new?add=${destination._id}`}>Plan a trip with this</Link>
+          </Button>
+          <h2 className="font-display text-2xl pt-2">Estimated budget</h2>
           {(["budget", "midRange", "luxury"] as const).map((tier) => {
             const costs = destination.estimatedCosts[tier];
             const total = costs.accommodation + costs.food + costs.transport + costs.activities;

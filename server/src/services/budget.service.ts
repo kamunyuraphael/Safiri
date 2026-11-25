@@ -3,9 +3,13 @@ import { IDestination, BudgetTier } from "../models/Destination.model";
 import { IBudgetSummary } from "../models/Itinerary.model";
 
 /**
- * Groups stops by day to determine the number of trip days,
- * then sums each populated destination's per-day/per-night cost
- * fields for the itinerary's chosen budget tier.
+ * Each (destination, day) pair is one day on the ground, so it costs one
+ * night of accommodation plus one day of food, transport and activities,
+ * per traveler. Several stops at the same destination on the same day are
+ * still one day there and are not charged twice.
+ *
+ * (The previous version charged accommodation once per destination no
+ * matter how many days were spent there, which under-counted longer stays.)
  */
 export function calculateBudgetSummary(itinerary: IItinerary): IBudgetSummary {
   const tier: BudgetTier = itinerary.budgetTier;
@@ -19,22 +23,19 @@ export function calculateBudgetSummary(itinerary: IItinerary): IBudgetSummary {
   let totalActivities = 0;
   let currency = "KES";
 
-  // one cost entry per unique destination visited (avoids double-counting
-  // accommodation if the same destination spans multiple days as one stop)
-  const seenDestinations = new Set<string>();
+  const seen = new Set<string>();
 
   for (const stop of itinerary.stops) {
     const destination = stop.destination as unknown as IDestination;
-    if (!destination || !destination.estimatedCosts) continue;
+    const costs = destination?.estimatedCosts?.[tier];
+    if (!costs) continue;
 
-    const destId = String(destination._id);
-    const costs = destination.estimatedCosts[tier];
-    currency = costs.currency;
+    const key = `${String(destination._id)}:${stop.day}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
 
-    if (!seenDestinations.has(destId)) {
-      totalAccommodation += costs.accommodation * numTravelers;
-      seenDestinations.add(destId);
-    }
+    currency = costs.currency || currency;
+    totalAccommodation += costs.accommodation * numTravelers;
     totalFood += costs.food * numTravelers;
     totalTransport += costs.transport * numTravelers;
     totalActivities += costs.activities * numTravelers;

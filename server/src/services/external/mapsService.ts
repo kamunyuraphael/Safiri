@@ -13,7 +13,7 @@ export interface GeocodeResult {
 
 /**
  * Geocodes a place name (e.g. "Maasai Mara, Kenya") to coordinates.
- * Used at seed time — coordinates are stored on the Destination document
+ * Used at seed time, coordinates are stored on the Destination document
  * afterward, so this is not called on every request.
  */
 export async function geocodePlace(query: string): Promise<GeocodeResult | null> {

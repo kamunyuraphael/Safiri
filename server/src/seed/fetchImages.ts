@@ -10,7 +10,7 @@ const UNSPLASH_SEARCH_URL = "https://api.unsplash.com/search/photos";
  * transfers each one to Cloudinary so the stored URL is permanent and
  * under your own control rather than a third-party hotlink. If no
  * Unsplash key is configured, returns an empty array rather than
- * failing the whole seed run — destinations can still be seeded
+ * failing the whole seed run, destinations can still be seeded
  * without images and backfilled later.
  */
 export async function fetchDestinationImages(
@@ -18,7 +18,7 @@ export async function fetchDestinationImages(
   count = 3
 ): Promise<IDestinationImage[]> {
   if (!UNSPLASH_ACCESS_KEY) {
-    console.warn(`UNSPLASH_ACCESS_KEY not set — skipping images for "${query}"`);
+    console.warn(`UNSPLASH_ACCESS_KEY not set: skipping images for "${query}"`);
     return [];
   }
 

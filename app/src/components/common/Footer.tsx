@@ -56,8 +56,8 @@ export function Footer() {
           <p className="text-[#4a6040] text-xs flex items-center gap-1.5">
             © 2026 Safiri. Proudly Kenyan. Made with <Globe className="h-3.5 w-3.5 inline" /> in Thika.
           </p>
-          <p className="text-[#4a6040] text-xs italic font-display">
-            Safari nzuri — Have a good journey.
+          <p className="text-[#4a6040] text-xs font-display">
+            Safari nzuri, have a good journey.
           </p>
         </div>
       </div>

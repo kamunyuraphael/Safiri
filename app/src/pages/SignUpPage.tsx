@@ -1,12 +1,15 @@
 import { useState, type FormEvent } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Compass, AlertCircle } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { AuthCarousel } from "@/components/common/AuthCarousel";
+import { getErrorMessage } from "@/lib/errors";
 
 export function SignUpPage() {
   const { register } = useAuth();
   const navigate = useNavigate();
+  const location = useLocation();
+  const from = (location.state as { from?: string } | null)?.from || "/";
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -18,17 +21,17 @@ export function SignUpPage() {
     e.preventDefault();
     setError(null);
 
-    if (password.length < 6) {
-      setError("Password must be at least 6 characters.");
+    if (password.length < 8) {
+      setError("Password must be at least 8 characters.");
       return;
     }
 
     setLoading(true);
     try {
       await register(name, email, password);
-      navigate("/");
-    } catch (err: any) {
-      setError(err?.response?.data?.message || "Could not create your account.");
+      navigate(from, { replace: true });
+    } catch (err) {
+      setError(getErrorMessage(err, "Could not create your account."));
     } finally {
       setLoading(false);
     }
@@ -36,12 +39,12 @@ export function SignUpPage() {
 
   return (
     <div className="min-h-screen grid lg:grid-cols-2">
-      {/* Left — real destination photo carousel, hidden on small screens */}
+      {/* Left: real destination photo carousel, hidden on small screens */}
       <div className="hidden lg:block order-2 lg:order-1">
         <AuthCarousel />
       </div>
 
-      {/* Right — form */}
+      {/* Right: form */}
       <div className="flex items-center justify-center px-6 py-20 lg:py-6 bg-earth-50 order-1 lg:order-2">
         <div className="w-full max-w-md">
           <Link to="/" className="flex items-center justify-center gap-2 mb-8">
@@ -97,7 +100,9 @@ export function SignUpPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-4 py-3 border border-earth-200 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-terra-400/40 focus:border-terra-400"
-                  placeholder="At least 6 characters"
+                  placeholder="At least 8 characters"
+                  minLength={8}
+                  autoComplete="new-password"
                 />
               </div>
               <button

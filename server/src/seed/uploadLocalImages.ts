@@ -45,7 +45,7 @@ async function uploadLocalImages() {
   for (const slug of slugFolders) {
     const destination = await Destination.findOne({ slug });
     if (!destination) {
-      console.log(`Skipping "${slug}" — no destination with that slug exists.`);
+      console.log(`Skipping "${slug}": no destination with that slug exists.`);
       continue;
     }
 

@@ -14,10 +14,10 @@ export function AboutPage() {
         </p>
         <p>
           Every destination here is curated with a real budget breakdown across three
-          tiers, seasonal weather guidance, and traveler-type fit — whether you're
+          tiers, seasonal weather guidance, and traveler-type fit, whether you're
           going solo, as a couple, or with the whole family.
         </p>
-        <p className="italic font-display text-terra-400">Safari nzuri — have a good journey.</p>
+        <p className="font-display text-terra-400">Safari nzuri, have a good journey.</p>
       </div>
     </div>
   );

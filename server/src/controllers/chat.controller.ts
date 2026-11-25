@@ -1,15 +1,9 @@
 import { Request, Response } from "express";
 import { asyncHandler } from "../utils/asyncHandler";
-import { getChatReply, ChatMessage } from "../services/chat.service";
+import { getChatReply } from "../services/chat.service";
 
-// POST /api/chat
+// POST /api/chat  (body is validated by chatSchema before it gets here)
 export const sendChatMessage = asyncHandler(async (req: Request, res: Response) => {
-  const messages: ChatMessage[] = req.body.messages;
-
-  if (!Array.isArray(messages) || messages.length === 0) {
-    return res.status(400).json({ message: "messages[] is required" });
-  }
-
-  const reply = await getChatReply(messages);
+  const reply = await getChatReply(req.body.messages);
   res.json({ reply });
 });

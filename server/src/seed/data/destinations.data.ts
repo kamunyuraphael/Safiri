@@ -203,7 +203,7 @@ export const seedDestinations: SeedDestinationInput[] = [
     county: "Samburu",
     category: "national-park",
     description:
-      "A rugged, semi-arid reserve along the Ewaso Ng'iro River, home to species found nowhere else in Kenya's southern parks — the 'Samburu Special Five'.",
+      "A rugged, semi-arid reserve along the Ewaso Ng'iro River, home to species found nowhere else in Kenya's southern parks, the 'Samburu Special Five'.",
     shortDescription: "Arid-land reserve famous for unique wildlife species and Samburu culture.",
     coordinates: [37.5347, 0.5975],
     imageQuery: "Samburu National Reserve wildlife",

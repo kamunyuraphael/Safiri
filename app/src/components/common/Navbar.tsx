@@ -14,6 +14,7 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const links = isAuthenticated ? [...NAV_LINKS, { to: "/itineraries", label: "My Trips" }] : NAV_LINKS;
 
   function handleLogout() {
     logout();
@@ -32,7 +33,7 @@ export function Navbar() {
         </Link>
 
         <ul className="hidden md:flex items-center gap-8">
-          {NAV_LINKS.map((link) => (
+          {links.map((link) => (
             <li key={link.label}>
               <Link
                 to={link.to}
@@ -82,11 +83,11 @@ export function Navbar() {
 
       {mobileOpen && (
         <div className="fixed inset-0 z-40 bg-forest-800 pt-24 px-8 flex flex-col gap-6">
-          {NAV_LINKS.map((link) => (
+          {links.map((link) => (
             <Link
               key={link.label}
               to={link.to}
-              className="font-display text-2xl text-earth-100 italic hover:text-savanna-400 transition-colors"
+              className="font-display text-2xl text-earth-100 hover:text-savanna-400 transition-colors"
               onClick={() => setMobileOpen(false)}
             >
               {link.label}
@@ -95,7 +96,7 @@ export function Navbar() {
           {isAuthenticated ? (
             <button
               onClick={handleLogout}
-              className="mt-4 flex items-center gap-2 text-earth-100 font-display text-2xl italic hover:text-savanna-400 transition-colors self-start"
+              className="mt-4 flex items-center gap-2 text-earth-100 font-display text-2xl hover:text-savanna-400 transition-colors self-start"
             >
               <LogOut className="h-5 w-5" /> Log out
             </button>
@@ -103,7 +104,7 @@ export function Navbar() {
             <Link
               to="/login"
               onClick={() => setMobileOpen(false)}
-              className="mt-4 font-display text-2xl text-earth-100 italic hover:text-savanna-400 transition-colors"
+              className="mt-4 font-display text-2xl text-earth-100 hover:text-savanna-400 transition-colors"
             >
               Sign in
             </Link>

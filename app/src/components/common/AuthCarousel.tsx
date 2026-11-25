@@ -27,7 +27,7 @@ export function AuthCarousel() {
   }, [slides.length]);
 
   if (slides.length === 0) {
-    // Graceful fallback if the API isn't reachable yet — a plain brand panel
+    // Graceful fallback if the API isn't reachable yet, a plain brand panel
     // instead of a broken/empty image area.
     return (
       <div className="h-full w-full bg-forest-800 flex items-center justify-center p-12">

@@ -1,3 +1,4 @@
+import { HttpError } from "../../utils/httpError";
 import axios from "axios";
 import ExchangeRateCache from "../../models/ExchangeRateCache.model";
 
@@ -6,7 +7,7 @@ const CACHE_TTL_MS = 60 * 60 * 1000; // 1 hour
 const BASE_CURRENCY = "KES";
 
 /**
- * Returns { USD: 0.0077, EUR: 0.0071, ... } — rates FROM KES to other currencies.
+ * Returns { USD: 0.0077, EUR: 0.0071, ... }, rates FROM KES to other currencies.
  * Serves from cache if fetched within the last hour, otherwise refreshes.
  */
 export async function getExchangeRates(): Promise<Record<string, number>> {
@@ -45,7 +46,7 @@ export async function convertFromKes(amountKes: number, targetCurrency: string):
   const rate = rates[targetCurrency.toUpperCase()];
 
   if (!rate) {
-    throw new Error(`Unsupported currency: ${targetCurrency}`);
+    throw new HttpError(400, `Unsupported currency: ${targetCurrency}`, "BAD_CURRENCY");
   }
 
   return Math.round(amountKes * rate * 100) / 100;

@@ -2,12 +2,12 @@ import cloudinary from "../config/cloudinary";
 import { UploadApiResponse } from "cloudinary";
 
 export interface CloudinaryUploadResult {
-  url: string;       // secure_url — permanent Cloudinary CDN link
+  url: string;       // secure_url, permanent Cloudinary CDN link
   publicId: string;  // needed later if you ever want to delete/replace the image
 }
 
 /**
- * Uploads an image from a local file path on disk — used by the manual
+ * Uploads an image from a local file path on disk, used by the manual
  * photo-upload script, since Cloudinary's SDK accepts local paths directly.
  */
 export async function uploadImageFromFile(
@@ -24,7 +24,7 @@ export async function uploadImageFromFile(
 
 /**
  * Uploads an image to Cloudinary directly from a remote URL (e.g. an
- * Unsplash result) without downloading it locally first — Cloudinary
+ * Unsplash result) without downloading it locally first, Cloudinary
  * fetches it server-side. Used by the seed script so destinations end
  * up with permanent Cloudinary URLs instead of third-party hotlinks.
  */
@@ -61,7 +61,7 @@ export function uploadImageFromBuffer(
 }
 
 /**
- * Deletes an image from Cloudinary by its publicId — e.g. when a
+ * Deletes an image from Cloudinary by its publicId, e.g. when a
  * review or its image is removed.
  */
 export async function deleteImage(publicId: string): Promise<void> {

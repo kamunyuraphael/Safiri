@@ -23,7 +23,7 @@ async function backfillMissingImages() {
     const images = await fetchDestinationImages(buildQuery(destination.name));
 
     if (images.length === 0) {
-      console.log(`Still no images for "${destination.name}" — try again later (rate limit likely).`);
+      console.log(`Still no images for "${destination.name}": try again later (rate limit likely).`);
       continue;
     }
 

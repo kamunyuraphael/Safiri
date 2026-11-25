@@ -16,7 +16,7 @@ async function backfill() {
     let changed = false;
 
     for (const image of destination.images) {
-      // Skip images that already have a Cloudinary publicId — already migrated.
+      // Skip images that already have a Cloudinary publicId, already migrated.
       if (image.publicId) continue;
 
       try {
@@ -37,7 +37,7 @@ async function backfill() {
       await destination.save();
       console.log(`Updated "${destination.name}"`);
     } else {
-      console.log(`Skipping "${destination.name}" — already migrated or has no images`);
+      console.log(`Skipping "${destination.name}": already migrated or has no images`);
     }
   }
 

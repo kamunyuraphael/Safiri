@@ -26,7 +26,7 @@ async function seed() {
     const existing = await Destination.findOne({ slug });
 
     if (existing) {
-      console.log(`Skipping "${item.name}" — already seeded`);
+      console.log(`Skipping "${item.name}": already seeded`);
       continue;
     }
 

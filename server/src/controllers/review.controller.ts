@@ -4,57 +4,66 @@ import Review from "../models/Review.model";
 import Destination from "../models/Destination.model";
 import { AuthRequest } from "../middleware/auth.middleware";
 import { uploadImageFromBuffer } from "../services/cloudinaryService";
+import { recalculateDestinationRating } from "../services/rating.service";
+import { HttpError } from "../utils/httpError";
 
 // GET /api/destinations/:destinationId/reviews
 export const getReviewsForDestination = asyncHandler(async (req: AuthRequest, res: Response) => {
-  const reviews = await Review.find({ destination: req.params.destinationId }).populate(
-    "user",
-    "name avatarUrl"
-  );
+  const reviews = await Review.find({ destination: req.params.destinationId })
+    .sort({ createdAt: -1 })
+    .populate("user", "name avatarUrl");
   res.json(reviews);
 });
 
 // POST /api/destinations/:destinationId/reviews
 export const createReview = asyncHandler(async (req: AuthRequest, res: Response) => {
-  const files = (req.files as Express.Multer.File[]) || [];
+  const destinationId = String(req.params.destinationId);
+  const userId = req.user!.userId;
 
+  // Check everything that can fail cheaply BEFORE uploading images, so a
+  // rejected review never leaves orphaned files in Cloudinary.
+  const destinationExists = await Destination.exists({ _id: destinationId });
+  if (!destinationExists) {
+    throw new HttpError(404, "Destination not found", "NOT_FOUND");
+  }
+
+  const alreadyReviewed = await Review.exists({ destination: destinationId, user: userId });
+  if (alreadyReviewed) {
+    throw new HttpError(409, "You've already reviewed this destination", "ALREADY_REVIEWED");
+  }
+
+  const files = (req.files as Express.Multer.File[]) || [];
   const uploadedImages: string[] = [];
   for (const file of files) {
     const { url } = await uploadImageFromBuffer(file.buffer, "safiri/reviews");
     uploadedImages.push(url);
   }
 
+  // Only whitelisted fields (validated by reviewSchema) reach the database.
+  const { rating, comment, visitedDate } = req.body;
   const review = await Review.create({
-    ...req.body,
-    destination: req.params.destinationId,
-    user: req.user!.userId,
+    rating,
+    comment,
+    visitedDate,
+    destination: destinationId,
+    user: userId,
     images: uploadedImages,
   });
 
-  // recalculate destination's avgRating + reviewCount
-  const stats = await Review.aggregate([
-    { $match: { destination: review.destination } },
-    { $group: { _id: "$destination", avgRating: { $avg: "$rating" }, count: { $sum: 1 } } },
-  ]);
-
-  if (stats.length > 0) {
-    await Destination.findByIdAndUpdate(review.destination, {
-      avgRating: Math.round(stats[0].avgRating * 10) / 10,
-      reviewCount: stats[0].count,
-    });
-  }
-
+  await recalculateDestinationRating(review.destination);
   res.status(201).json(review);
 });
 
-// DELETE /api/reviews/:id
+// DELETE /api/destinations/:destinationId/reviews/:id
 export const deleteReview = asyncHandler(async (req: AuthRequest, res: Response) => {
-  const review = await Review.findOneAndDelete({
-    _id: req.params.id,
-    user: req.user!.userId,
-  });
+  const filter: Record<string, unknown> = { _id: req.params.id };
+  if (req.user!.role !== "admin") filter.user = req.user!.userId; // admins can moderate
+
+  const review = await Review.findOneAndDelete(filter);
   if (!review) {
-    return res.status(404).json({ message: "Review not found" });
+    throw new HttpError(404, "Review not found", "NOT_FOUND");
   }
+
+  await recalculateDestinationRating(review.destination);
   res.json({ message: "Review deleted" });
 });

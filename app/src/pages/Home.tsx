@@ -58,7 +58,7 @@ export function Home() {
       : destinations.filter((d) => CATEGORY_TO_BADGE[d.category] === activeFilter);
 
   // Real per-tier daily average, computed from the actual seeded dataset
-  // rather than a hardcoded number — grounds the estimator in real data.
+  // rather than a hardcoded number, grounds the estimator in real data.
   const avgDailyCostByTier = useMemo(() => {
     const tiers: BudgetTier[] = ["budget", "midRange", "luxury"];
     const result: Record<BudgetTier, number> = { budget: 0, midRange: 0, luxury: 0 };
@@ -126,7 +126,7 @@ export function Home() {
             Answer it.
           </h1>
           <p className="text-earth-300 text-lg md:text-xl max-w-xl leading-relaxed mb-10">
-            Safiri finds the perfect Kenyan destination for your budget — from the
+            Safiri finds the perfect Kenyan destination for your budget, from the
             savanna grasslands of Masai Mara to the coral-fringed shores of Diani.
           </p>
           <div className="flex flex-col sm:flex-row gap-3">
@@ -162,7 +162,7 @@ export function Home() {
             </div>
             <p className="text-earth-300/80 text-lg leading-relaxed">
               Whether you crave the raw silence of a game drive at dawn or the salt
-              wind of the Indian Ocean, Safiri connects you to the experience — and
+              wind of the Indian Ocean, Safiri connects you to the experience, and
               tells you exactly what it costs.
             </p>
           </div>
@@ -214,7 +214,7 @@ export function Home() {
             <p className="text-forest-700/50">Loading destinations…</p>
           ) : filtered.length === 0 ? (
             <p className="text-forest-700/50">
-              No destinations found — run the seed script on the server to populate this.
+              No destinations found. Run the seed script on the server to populate this.
             </p>
           ) : (
             <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -242,7 +242,7 @@ export function Home() {
             </h2>
             <p className="text-forest-700/70 text-lg max-w-xl mx-auto">
               No surprises. Estimates below are averaged from real seeded destination
-              data — not guesses.
+              data, not guesses.
             </p>
           </div>
 
@@ -311,10 +311,10 @@ export function Home() {
               <div>
                 <p className="text-sm text-forest-700/60 mb-1">
                   Estimated total for {budgetAdults} {budgetAdults === 1 ? "person" : "people"}, {budgetDays}{" "}
-                  {budgetDays === 1 ? "day" : "days"} — {budgetTier === "midRange" ? "Mid-Range" : budgetTier}
+                  {budgetDays === 1 ? "day" : "days"} · {budgetTier === "midRange" ? "Mid-Range" : budgetTier}
                 </p>
                 <p className="font-display text-5xl text-forest-800">
-                  {destinations.length > 0 ? `KES ${estimatedTotal.toLocaleString()}` : "—"}
+                  {destinations.length > 0 ? `KES ${estimatedTotal.toLocaleString()}` : "N/A"}
                 </p>
                 <p className="text-xs text-earth-400 mt-1">
                   Averaged across {destinations.length} seeded destinations. Excludes flights.
@@ -338,7 +338,7 @@ export function Home() {
                 <tc.icon className="h-8 w-8 mb-4" strokeWidth={1.75} />
                 <h3 className="font-display text-2xl mb-1">{tc.label}</h3>
                 <p className="text-lg font-semibold opacity-80 mb-6">
-                  {destinations.length > 0 ? `~KES ${avgDailyCostByTier[tc.tier].toLocaleString()}/day` : "—"}
+                  {destinations.length > 0 ? `~KES ${avgDailyCostByTier[tc.tier].toLocaleString()}/day` : "N/A"}
                 </p>
                 <ul className="space-y-2 mb-8">
                   {tc.perks.map((p) => (
@@ -360,7 +360,7 @@ export function Home() {
         </div>
       </section>
 
-      {/* PLAN WITH SAFIRI — chatbot, added alongside the static planner above */}
+      {/* PLAN WITH SAFIRI, chatbot, added alongside the static planner above */}
       <section id="plan" className="bg-forest-800">
         <div className="mx-auto max-w-6xl px-6 md:px-16 lg:px-24 py-24 grid md:grid-cols-2 gap-12 items-center">
           <div>
@@ -376,9 +376,9 @@ export function Home() {
               seeded destinations that fit.
             </p>
             <ul className="mt-6 space-y-2 text-sm text-earth-300/70">
-              <li>— "A quiet beach for a honeymoon, mid-range budget"</li>
-              <li>— "Family safari under 15,000 KES a day"</li>
-              <li>— "Best lake to visit in July"</li>
+              <li>"A quiet beach for a honeymoon, mid-range budget"</li>
+              <li>"Family safari under 15,000 KES a day"</li>
+              <li>"Best lake to visit in July"</li>
             </ul>
           </div>
 
@@ -406,7 +406,7 @@ export function Home() {
                 key={t.name}
                 className="p-8 bg-forest-700/50 border border-forest-700 rounded-2xl hover:border-savanna-400/40 transition-colors"
               >
-                <p className="text-savanna-400 text-3xl font-display italic mb-4">"</p>
+                <p className="text-savanna-400 text-3xl font-display mb-4">"</p>
                 <p className="text-earth-200 leading-relaxed mb-6 text-sm">{t.text}</p>
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-terra-400 flex items-center justify-center text-white text-xs font-bold shrink-0">
